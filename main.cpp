@@ -92,15 +92,15 @@ int main()
     ofstream ot("output.txt");
     output_function(B0, ot);
     Book B1("","", 0);
-    for (const auto pos : VBook){
-        if(VBook[pos].get_pages() > B1.get_pages()){
-            B1.set_pages(VBook[pos].get_pages());
-            B1.set_author(VBook[pos].get_author());
-            B1.set_title(VBook[pos].get_title());
+    for (int i = 0; i < n; ++i){
+        Book& tmp = VBook[i];
+        if(tmp.get_pages() > B1.get_pages()){
+            B1.set_pages(tmp.get_pages());
+            B1.set_author(tmp.get_author());
+            B1.set_title(tmp.get_title());
         }
     }
-    ofstream ot("output.txt");
-
+    ot << endl;
     output_function(B1, ot);
     book_list.close();
     return 0;
