@@ -27,15 +27,30 @@ public:
         pages = p;
     }
     print(){
-        cout << "Автор: " << author << endl;
-        cout << "Название книги " << title << endl;
-        cout << "Количество страниц " << pages << endl;
+        cout << "РђРІС‚РѕСЂ: " << author << endl;
+        cout << "РќР°Р·РІР°РЅРёРµ РєРЅРёРіРё: " << title << endl;
+        cout << "РљРѕР»РёС‡РµСЃС‚РІРѕ СЃС‚СЂР°РЅРёС†: " << pages << endl;
         }
+    int get_pages(){return pages;}
+    string get_author(){return author;}
+    string get_title(){return title;}
+    void set_title(string t){title = t;}
+    void set_pages(int p){pages = p;}
+    void set_author(string a){author = a;}
+
+
 };
 
 void reading_check(ifstream& s){
-    cout << "Считано байт: " << s.tellg() << endl;
+    cout << "РЎС‡РёС‚Р°РЅРѕ Р±Р°Р№С‚: " << s.tellg() << endl;
 }
+
+void output_function(Book& B1, ofstream& f){
+    B1.print();
+    f << B1.get_author() << endl << B1.get_title() << endl << B1.get_pages();
+}
+
+
 
 
 
@@ -45,27 +60,48 @@ int main()
     ifstream book_list("input.txt");
     int n;
     book_list >> n;
+    book_list.ignore();
     Book *pBook;
     pBook = new Book[n];
+    vector<Book> VBook(n);
     reading_check(book_list);
     string atr = "";
     string ttl = "";
-    int pgs = 0; //вспомогательные переменные для записи в массив
-    int book_count;
+    int pgs = 0; //РІСЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Рµ РїРµСЂРµРјРµРЅРЅС‹Рµ РґР»СЏ Р·Р°РїРёСЃРё РІ РјР°СЃСЃРёРІ
     reading_check(book_list);
     for(int i = 0; i < n; ++i){
-    book_list >> atr;
-//    cout << atr << endl;
-    book_list >> ttl;
-//    cout << ttl << endl;
+    getline(book_list, atr);
+    getline(book_list, ttl);
     book_list >> pgs;
-//    cout << pgs;
+    book_list.ignore();
     pBook[i].set(atr, ttl, pgs);
+    VBook[i].set(atr, ttl, pgs);
     pBook[i].print();
     }
     reading_check(book_list);
-    cout << "Книги успешно считаны из файла!"<< endl;
-    cout << "Hello world!" << endl;
-    return 0;
+    cout << "РљРЅРёРіРё СѓСЃРїРµС€РЅРѕ СЃС‡РёС‚Р°РЅС‹ РёР· С„Р°Р№Р»Р°!"<< endl;
+    Book B0("", "", 0);
+    for (int i = 0; i < n; ++i){
+        if (pBook[i].get_pages() > B0.get_pages()){
+
+                B0.set_pages(pBook[i].get_pages());
+                B0.set_author(pBook[i].get_author());
+                B0.set_title(pBook[i].get_title());
+        }
+    }
+    ofstream ot("output.txt");
+    output_function(B0, ot);
+    Book B1("","", 0);
+    for (const auto pos : VBook){
+        if(VBook[pos].get_pages() > B1.get_pages()){
+            B1.set_pages(VBook[pos].get_pages());
+            B1.set_author(VBook[pos].get_author());
+            B1.set_title(VBook[pos].get_title());
+        }
+    }
+    ofstream ot("output.txt");
+
+    output_function(B1, ot);
     book_list.close();
+    return 0;
 }
