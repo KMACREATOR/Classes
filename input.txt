@@ -1,0 +1,13 @@
+4
+Mikhail Bulgakov
+Master and Margarita
+400
+Feodor Dostoevsky
+Crime and Punishment
+500
+Leo Tolstoy
+War and Peace
+1300
+Leo Tolstoy
+Anna Karenina
+800
